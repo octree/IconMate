@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import SwiftUI
 import UniformTypeIdentifiers
+import MobileCoreServices
 
 class HomeViewModel: ObservableObject {
     @Published var iphone: Bool = true

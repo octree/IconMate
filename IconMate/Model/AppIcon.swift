@@ -34,7 +34,7 @@ struct AppIcon: Codable {
         case pt40    =   "40x40"
         case pt60    =   "60x60"
         case pt76    =   "76x76"
-        case pt83_5  =   "83_5x83_5"
+        case pt83_5  =   "83.5x83.5"
         case pt1024  =   "1024x1024"
         case pt16    =   "16x16"
         case pt32    =   "32x32"
@@ -44,7 +44,7 @@ struct AppIcon: Codable {
     }
 
     struct Image: Codable {
-        var fileName: String
+        var filename: String
         var idiom: Idom
         var scale: Scale
         var size: ImageSize
@@ -116,7 +116,7 @@ struct ScaleSize: Hashable {
     var size: AppIcon.ImageSize
     var scale: AppIcon.Scale
     var fileName: String {
-        scale == .one ? "Icon-\(size.fileName).png" : "Icon-\(size.width)@\(scale.rawValue).png"
+        scale == .one ? "Icon-\(size.fileName).png" : "Icon-\(size.fileName)@\(scale.rawValue).png"
     }
 }
 
@@ -153,13 +153,13 @@ extension ScaleSize {
             .pt32: [.one, .two],
             .pt128: [.one, .two],
             .pt256: [.one, .two],
-            .pt512: [.two]
+            .pt512: [.one, .two]
         ]
     }
     static let market: ScaleSize = ScaleSize(size: .pt1024, scale: .one)
 
     func image(for idom: AppIcon.Idom) -> AppIcon.Image {
-        .init(fileName: fileName, idiom: idom, scale: scale, size: size)
+        .init(filename: fileName, idiom: idom, scale: scale, size: size)
     }
 }
 
