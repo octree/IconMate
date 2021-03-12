@@ -9,6 +9,7 @@ class HomeViewModel: ObservableObject {
     @Published var iPad: Bool = true
     @Published var mac: Bool = false
     @Published var market: Bool = true
+    @Published var removeAlpha: Bool = true
     @Published var image: UIImage?
 
     private func allImageInfoAndSizes() -> ([AppIcon.Image], Set<ScaleSize>) {
@@ -51,7 +52,7 @@ class HomeViewModel: ObservableObject {
     }
 
     private func saveAppIcon(to url: URL) {
-        guard let image = self.image?.removingAlphaChannel else {
+        guard let image = removeAlpha ?  self.image?.removingAlphaChannel : self.image else {
             return
         }
         let (imageInfos, sizes) = allImageInfoAndSizes()
@@ -59,6 +60,9 @@ class HomeViewModel: ObservableObject {
         let root = FS.Path(url.path) + "AppIcon.appiconset"
         let info = AppIcon(info: .init(), images: imageInfos)
         do {
+            if root.exists {
+                try root.delete()
+            }
             try root.mkdir()
             let encoder = JSONEncoder()
             encoder.outputFormatting = .prettyPrinted

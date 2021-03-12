@@ -16,13 +16,22 @@ extension CGImage {
     }
 
     func resized(width: Int, height: Int) -> CGImage {
+        let info: CGImageAlphaInfo
+        switch alphaInfo {
+        case .first:
+            info = .premultipliedFirst
+        case .last:
+            info = .premultipliedLast
+        default:
+            info = alphaInfo
+        }
         let context = CGContext(data: nil,
                                 width: width,
                                 height: height,
                                 bitsPerComponent: bitsPerComponent,
                                 bytesPerRow: bytesPerRow,
                                 space: colorSpace!,
-                                bitmapInfo: alphaInfo.rawValue)!
+                                bitmapInfo: info.rawValue)!
         context.interpolationQuality = .high
         context.draw(self, in: CGRect(x: 0, y: 0, width: width, height: height))
         return context.makeImage()!

@@ -34,6 +34,14 @@ struct HomeView: View {
         }
     }
 
+    private var alphaBinding: Binding<Bool> {
+        .init {
+            viewModel.removeAlpha
+        } set: { newValue in
+            viewModel.removeAlpha = newValue
+        }
+    }
+
     var body: some View {
         VStack(spacing: 32) {
             ImageDropView(viewModel: viewModel)
@@ -43,6 +51,7 @@ struct HomeView: View {
                     Toggle("iPad", isOn: iPadBinding)
                     Toggle("Mac", isOn: macBinding)
                     Toggle("iOS Marketing", isOn: marketBinding)
+                    Toggle("Remove Alpha Channel", isOn: alphaBinding)
                 }
                 Button {
                     viewModel.onSave()
