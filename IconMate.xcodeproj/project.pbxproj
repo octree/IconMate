@@ -76,7 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				C241013725FA3B220047EFFC /* IconMate.entitlements */,
-				C252503725FA39F900DC7A7A /* Assets.xcassets */,
+				C2F4771B2609C6BC00B0BEC3 /* Resource */,
 				C2B7F12C25FA401D004924A5 /* Model */,
 				C252502225FA39B600DC7A7A /* Misc */,
 				C252502125FA399600DC7A7A /* Application */,
@@ -98,8 +98,6 @@
 		C252502125FA399600DC7A7A /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				C252503A25FA3AC400DC7A7A /* Color+Extension.swift */,
-				C252503B25FA3AC400DC7A7A /* Image+Assets.swift */,
 				C252501125FA399000DC7A7A /* IconMateApp.swift */,
 			);
 			path = Application;
@@ -134,6 +132,16 @@
 				C2B7F12D25FA4029004924A5 /* AppIcon.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		C2F4771B2609C6BC00B0BEC3 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				C252503A25FA3AC400DC7A7A /* Color+Extension.swift */,
+				C252503B25FA3AC400DC7A7A /* Image+Assets.swift */,
+				C252503725FA39F900DC7A7A /* Assets.xcassets */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

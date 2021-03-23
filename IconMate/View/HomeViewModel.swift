@@ -4,18 +4,27 @@ import SwiftUI
 import UniformTypeIdentifiers
 import MobileCoreServices
 
+private func _binding<T, V>(target: T, path: ReferenceWritableKeyPath<T, V>) -> Binding<V> {
+    .init {
+        target[keyPath: path]
+    } set: { newValue in
+        target[keyPath: path] = newValue
+    }
+}
+
 class HomeViewModel: ObservableObject {
-    @Published var iphone: Bool = true
+    @Published var iPhone: Bool = true
     @Published var iPad: Bool = true
     @Published var mac: Bool = false
     @Published var market: Bool = true
     @Published var removeAlpha: Bool = true
     @Published var image: UIImage?
+    @Published var name: String = "AppIcon"
 
     private func allImageInfoAndSizes() -> ([AppIcon.Image], Set<ScaleSize>) {
         var images = [AppIcon.Image]()
         var sizes = Set<ScaleSize>()
-        if iphone {
+        if iPhone {
             let size = ScaleSize.iPhoneScaleMap.scaleSizes
             images.append(contentsOf: size.map({ $0.image(for: .iPhone) }))
             size.forEach { sizes.insert($0) }
@@ -55,9 +64,11 @@ class HomeViewModel: ObservableObject {
         guard let image = removeAlpha ?  self.image?.removingAlphaChannel : self.image else {
             return
         }
+        let trimmed = name.trimmingCharacters(in: .whitespaces)
+        let fileName = trimmed.count > 0 ? trimmed : "AppIcon"
         let (imageInfos, sizes) = allImageInfoAndSizes()
         let imageMap = sizes.resizedImages(for: image)
-        let root = FS.Path(url.path) + "AppIcon.appiconset"
+        let root = FS.Path(url.path) + "\(fileName).appiconset"
         let info = AppIcon(info: .init(), images: imageInfos)
         do {
             if root.exists {
@@ -74,6 +85,10 @@ class HomeViewModel: ObservableObject {
         } catch {
             print(error)
         }
+    }
+    
+    func binding<V>(_ path: ReferenceWritableKeyPath<HomeViewModel, V>) -> Binding<V> {
+        _binding(target: self, path: path)
     }
 }
 
