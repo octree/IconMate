@@ -25,11 +25,13 @@ extension CGImage {
         default:
             info = alphaInfo
         }
+        let bytesPerPixel = bitsPerPixel / bitsPerComponent
+        let destBytesPerRow = width * bytesPerPixel
         let context = CGContext(data: nil,
                                 width: width,
                                 height: height,
                                 bitsPerComponent: bitsPerComponent,
-                                bytesPerRow: bytesPerRow,
+                                bytesPerRow: destBytesPerRow,
                                 space: colorSpace!,
                                 bitmapInfo: info.rawValue)!
         context.interpolationQuality = .high

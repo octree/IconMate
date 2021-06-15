@@ -19,6 +19,7 @@ class HomeViewModel: ObservableObject {
     @Published var market: Bool = true
     @Published var removeAlpha: Bool = true
     @Published var image: UIImage?
+    @Published var macImage: UIImage?
     @Published var name: String = "AppIcon"
 
     private func allImageInfoAndSizes() -> ([AppIcon.Image], Set<ScaleSize>) {
@@ -67,7 +68,7 @@ class HomeViewModel: ObservableObject {
         let trimmed = name.trimmingCharacters(in: .whitespaces)
         let fileName = trimmed.count > 0 ? trimmed : "AppIcon"
         let (imageInfos, sizes) = allImageInfoAndSizes()
-        let imageMap = sizes.resizedImages(for: image)
+        let imageMap = sizes.resizedImages(for: image, mac: macImage)
         let root = FS.Path(url.path) + "\(fileName).appiconset"
         let info = AppIcon(info: .init(), images: imageInfos)
         do {

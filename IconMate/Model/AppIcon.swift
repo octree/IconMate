@@ -41,6 +41,10 @@ struct AppIcon: Codable {
         case pt128   =   "128x128"
         case pt256   =   "256x256"
         case pt512   =   "512x512"
+        static let macOnly: Set<ImageSize> = [.pt16, .pt32, .pt128, .pt256, .pt512]
+        var isMacOnly: Bool {
+            Self.macOnly.contains(self)
+        }
     }
 
     struct Image: Codable {
@@ -49,7 +53,6 @@ struct AppIcon: Codable {
         var scale: Scale
         var size: ImageSize
     }
-
     var info: Info
     var images: [Image]
 }
@@ -118,6 +121,8 @@ struct ScaleSize: Hashable {
     var fileName: String {
         scale == .one ? "Icon-\(size.fileName).png" : "Icon-\(size.fileName)@\(scale.rawValue).png"
     }
+
+    var isMacOnly: Bool { size.isMacOnly }
 }
 
 extension AppIcon.ImageSize {
@@ -174,10 +179,15 @@ extension Dictionary where Key == AppIcon.ImageSize, Value == [AppIcon.Scale] {
 }
 
 extension Set where Element == ScaleSize {
-    func resizedImages(for image: UIImage) -> [ScaleSize: UIImage] {
+    func resizedImages(for image: UIImage, mac: UIImage? = nil) -> [ScaleSize: UIImage] {
+        let mac = mac ?? image
         var result = [ScaleSize: UIImage]()
         for size in self {
-            result[size] = image.resize(with: size)
+            if size.isMacOnly {
+                result[size] = mac.resize(with: size)
+            } else {
+                result[size] = image.resize(with: size)
+            }
         }
         return result
     }

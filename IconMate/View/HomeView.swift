@@ -7,7 +7,12 @@ struct HomeView: View {
             TextField("AppIcon", text: viewModel.binding(\.name))
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 200)
-            ImageDropView(viewModel: viewModel)
+            HStack(spacing: 24) {
+                ImageDropView(image: viewModel.binding(\.image), title: "Drag")
+                if viewModel.mac {
+                    ImageDropView(image: viewModel.binding(\.macImage), title: "macOS")
+                }
+            }
             if viewModel.image != nil {
                 VStack(spacing: 16) {
                     Toggle("iPhone", isOn: viewModel.binding(\.iPhone))

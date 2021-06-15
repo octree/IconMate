@@ -1,16 +1,41 @@
 import SwiftUI
 
+private class ImageDropViewModel: ObservableObject {
+    var image: Binding<UIImage?>
+    init(image: Binding<UIImage?>) {
+        self.image = image
+    }
+}
+
+extension ImageDropViewModel: DropDelegate {
+    func performDrop(info: DropInfo) -> Bool {
+        return info.itemProviders(for: [.png])
+            .loadFirstObject(ofType: UIImage.self) { image in
+                DispatchQueue.main.async {
+                    self.image.wrappedValue = image
+                }
+        }
+    }
+}
+
 struct ImageDropView: View {
-    @ObservedObject var viewModel: HomeViewModel
+    @StateObject private var viewModel: ImageDropViewModel
+    @Binding var image: UIImage?
+    var title: String
+    init(image: Binding<UIImage?>, title: String) {
+        self.title = title
+        _image = image
+        _viewModel = .init(wrappedValue: .init(image: image))
+    }
     var body: some View {
         HStack {
             ZStack {
                 VStack(spacing: 12) {
                     Image.plus
-                    Text("Drag")
+                    Text(title)
                 }.font(.title)
                 .foregroundColor(.secondaryLabel)
-                if let image = viewModel.image {
+                if let image = image {
                     Image(uiImage: image)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
