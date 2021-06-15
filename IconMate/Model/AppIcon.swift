@@ -57,22 +57,6 @@ struct AppIcon: Codable {
     var images: [Image]
 }
 
-
-struct Idom: OptionSet {
-    static let iPhone = Idom(rawValue: 1 << 0)
-    static let iPad = Idom(rawValue: 1 << 1)
-    static let mac = Idom(rawValue: 1 << 2)
-    typealias RawValue = UInt
-    var rawValue: UInt
-    init(rawValue: RawValue) {
-        self.rawValue = rawValue
-    }
-}
-
-struct IconImage {
-
-}
-
 extension AppIcon.ImageSize {
     var width: CGFloat {
         switch self {
